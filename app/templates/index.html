@@ -2,34 +2,122 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Dynamic Bubble Chart</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Dynamic Bubble Chart with D3.js</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
         .controls {
             margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .controls label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        .controls select, .controls button {
+            margin-right: 10px;
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+        .controls button {
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+        }
+        .controls button:hover {
+            background-color: #0056b3;
+        }
+        .chart {
+            display: flex;
+            justify-content: center;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .tooltip {
+            position: absolute;
+            text-align: center;
+            width: auto;
+            height: auto;
+            padding: 8px;
+            font: 12px sans-serif;
+            background: lightsteelblue;
+            border: 0px;
+            border-radius: 8px;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
-    <div class="controls">
-        <label for="countries">Select Countries:</label>
-        <select id="countries" multiple></select>
-        <br>
-        <label for="startYear">Start Year:</label>
-        <select id="startYear"></select>
-        <label for="endYear">End Year:</label>
-        <select id="endYear"></select>
-        <br>
-        <button id="playButton">Play</button>
-        <button id="stopButton">Stop</button>
-    </div>
-    <div style="width: 75%; margin: auto;">
-        <canvas id="bubbleChart"></canvas>
+    <div class="container">
+        <div class="controls">
+            <div>
+                <label for="countries">Select Countries:</label>
+                <select id="countries" multiple></select>
+            </div>
+            <div>
+                <label for="startYear">Start Year:</label>
+                <select id="startYear"></select>
+                <label for="endYear">End Year:</label>
+                <select id="endYear"></select>
+            </div>
+            <div>
+                <button id="playButton"><i class="fas fa-play"></i> Play</button>
+                <button id="stopButton"><i class="fas fa-stop"></i> Stop</button>
+            </div>
+        </div>
+        <div class="chart">
+            <svg id="bubbleChart" width="800" height="600"></svg>
+        </div>
     </div>
 
     <script>
         let stopAnimation = false;
-        let chart = null;
+        const svg = d3.select("#bubbleChart");
+        const margin = { top: 20, right: 20, bottom: 50, left: 60 };
+        const width = +svg.attr("width") - margin.left - margin.right;
+        const height = +svg.attr("height") - margin.top - margin.bottom;
+        const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+        const x = d3.scaleLinear().range([0, width]);
+        const y = d3.scaleLinear().range([height, 0]);
+        const z = d3.scaleSqrt().range([2, 40]);
+
+        const xAxis = d3.axisBottom(x);
+        const yAxis = d3.axisLeft(y);
+
+        g.append("g").attr("class", "x-axis").attr("transform", `translate(0,${height})`);
+        g.append("g").attr("class", "y-axis");
+
+        svg.append("text")
+            .attr("class", "title")
+            .attr("x", width / 2 + margin.left)
+            .attr("y", margin.top / 2)
+            .attr("text-anchor", "middle")
+            .style("font-size", "16px");
+
+        // Tooltip
+        const tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
 
         async function fetchData(url) {
             const response = await fetch(url);
@@ -57,70 +145,60 @@
         function formatData(data, selectedCountries, year) {
             return data.filter(d => selectedCountries.includes(d.Country) && d.Year === year)
                 .map(d => ({
-                    x: d.Population,
-                    y: d.Military_Expenditure,
-                    r: d.GDP / 1e12, // Scale GDP for bubble size
-                    label: d.Country,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)'
+                    country: d.Country,
+                    population: +d.Population,
+                    militaryExpenditure: +d['Military_Expenditure'],
+                    gdp: +d.GDP
                 }));
         }
 
-        function createBubbleChart(data, selectedCountries, year) {
-            const ctx = document.getElementById('bubbleChart').getContext('2d');
-            return new Chart(ctx, {
-                type: 'bubble',
-                data: {
-                    datasets: [{
-                        label: 'Countries',
-                        data: data
-                    }]
-                },
-                options: {
-                    animation: {
-                        duration: 2000
-                    },
-                    scales: {
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Population'
-                            }
-                        },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'Military Expenditure (% of GDP)'
-                            }
-                        }
-                    },
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: `Countries: ${selectedCountries.join(', ')} | Year: ${year}`
-                        },
-                        legend: {
-                            display: true
-                        }
-                    }
-                }
-            });
+        function updateChart(data, selectedCountries, year) {
+            x.domain([0, d3.max(data, d => d.population)]).nice();
+            y.domain([0, d3.max(data, d => d.militaryExpenditure)]).nice();
+            z.domain([0, d3.max(data, d => d.gdp)]);
+
+            g.select(".x-axis").transition().call(xAxis);
+            g.select(".y-axis").transition().call(yAxis);
+
+            const bubbles = g.selectAll(".bubble").data(data, d => d.country);
+
+            bubbles.enter().append("circle")
+                .attr("class", "bubble")
+                .attr("cx", d => x(d.population))
+                .attr("cy", d => y(d.militaryExpenditure))
+                .attr("r", d => z(d.gdp))
+                .style("fill", "rgba(75, 192, 192, 0.7)")
+                .style("stroke", "black")
+                .style("stroke-width", 1)
+                .on("mouseover", function(event, d) {
+                    tooltip.transition().duration(200).style("opacity", .9);
+                    tooltip.html(`Country: ${d.country}<br>Population: ${d.population}<br>Military Expenditure: ${d.militaryExpenditure}% of GDP<br>GDP: $${d.gdp}`)
+                        .style("left", (event.pageX + 5) + "px")
+                        .style("top", (event.pageY - 28) + "px");
+                })
+                .on("mouseout", function() {
+                    tooltip.transition().duration(500).style("opacity", 0);
+                })
+                .merge(bubbles)
+                .transition()
+                .duration(1000)
+                .attr("cx", d => x(d.population))
+                .attr("cy", d => y(d.militaryExpenditure))
+                .attr("r", d => z(d.gdp));
+
+            bubbles.exit().remove();
+
+            svg.select(".title").text(`Countries: ${selectedCountries.join(', ')} | Year: ${year}`);
         }
 
-        function updateChart(chart, data, selectedCountries, year) {
-            chart.data.datasets[0].data = data;
-            chart.options.plugins.title.text = `Countries: ${selectedCountries.join(', ')} | Year: ${year}`;
-            chart.update();
-        }
-
-        async function playAnimation(chart, data, selectedCountries, startYear, endYear) {
+        async function playAnimation(data, selectedCountries, startYear, endYear) {
             stopAnimation = false;
             for (let year = startYear; year <= endYear; year++) {
                 if (stopAnimation) {
                     break;
                 }
-                const filteredData = formatData(data, selectedCountries, year);
-                updateChart(chart, filteredData, selectedCountries, year);
+                const formattedData = formatData(data, selectedCountries, year);
+                updateChart(formattedData, selectedCountries, year);
                 await new Promise(resolve => setTimeout(resolve, 1000)); // 1 second delay between frames
             }
         }
@@ -130,18 +208,7 @@
             const startYear = parseInt(document.getElementById('startYear').value);
             const endYear = parseInt(document.getElementById('endYear').value);
             const data = await fetchData('/data');
-
-            // If a chart already exists, destroy it before creating a new one
-            if (chart) {
-                chart.destroy();
-            }
-
-            // Create a new chart instance
-            const formattedData = formatData(data, selectedCountries, startYear);
-            chart = createBubbleChart(formattedData, selectedCountries, startYear);
-
-            // Start the animation
-            playAnimation(chart, data, selectedCountries, startYear, endYear);
+            playAnimation(data, selectedCountries, startYear, endYear);
         });
 
         document.getElementById('stopButton').addEventListener('click', () => {
