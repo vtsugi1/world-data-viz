@@ -4,70 +4,15 @@
     <meta charset="UTF-8">
     <title>Dynamic Bubble Chart with D3.js</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" href="/static/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            width: 80%;
-            margin: auto;
-            padding: 20px;
-        }
-        .controls {
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-        }
-        .controls label {
-            margin-right: 10px;
-            font-weight: bold;
-        }
-        .controls select, .controls button {
-            margin-right: 10px;
-            padding: 5px 10px;
-            font-size: 14px;
-        }
-        .controls button {
-            cursor: pointer;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            padding: 10px 20px;
-        }
-        .controls button:hover {
-            background-color: #0056b3;
-        }
-        .chart {
-            display: flex;
-            justify-content: center;
-            background-color: white;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .tooltip {
-            position: absolute;
-            text-align: center;
-            width: auto;
-            height: auto;
-            padding: 8px;
-            font: 12px sans-serif;
-            background: lightsteelblue;
-            border: 0px;
-            border-radius: 8px;
-            pointer-events: none;
-        }
-    </style>
 </head>
 <body>
     <div class="container">
+        <div class="header">
+            <h1>World Data Viz</h1>
+            <p>Welcome to the World Data Viz! Use the controls below to generate a dynamic bubble chart. Select the countries and years to visualize the data. Click "Play" to animate the data over time or "Stop" to halt the animation.</p>
+        </div>
         <div class="controls">
             <div>
                 <label for="countries">Select Countries:</label>
