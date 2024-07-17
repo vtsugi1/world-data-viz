@@ -5,7 +5,7 @@ body {
     padding: 0;
 }
 .container {
-    width: 80%;
+    width: 90%;
     margin: auto;
     padding: 20px;
 }
@@ -22,31 +22,29 @@ body {
     font-size: 18px;
     color: #666;
 }
+.banner-img {
+    width: 50%; /* Make the image 50% smaller */
+    margin: 0 auto; /* Center the image horizontally */
+}
 .controls {
     margin-bottom: 20px;
     display: flex;
-    justify-content: space-between;
     flex-wrap: wrap;
+    margin-top: 40px; /* Added margin-top for vertical spacing */
 }
-.controls label {
-    margin-right: 10px;
-    font-weight: bold;
+.controls .input-field {
+    margin-top: 0;
 }
-.controls select, .controls button {
-    margin-right: 10px;
-    padding: 5px 10px;
-    font-size: 14px;
+.controls .input-field label {
+    display: block;
+    margin-bottom: 10px; /* Added margin-bottom for spacing */
 }
-.controls button {
-    cursor: pointer;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 10px 20px;
+.controls .select2-container {
+    width: 100% !important; /* Ensure the select2 container uses full width */
 }
-.controls button:hover {
-    background-color: #0056b3;
+.controls .btn {
+    width: 100%;
+    margin-top: 10px;
 }
 .chart {
     display: flex;
