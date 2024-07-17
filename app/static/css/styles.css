@@ -51,11 +51,15 @@ body {
 .chart {
     display: flex;
     justify-content: center;
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+.bubbles {
+    stroke-width: 1px;
+    stroke: black;
+    opacity: .8;
+}
+.bubbles:hover {
+    stroke: black;
 }
 .tooltip {
     position: absolute;
@@ -64,8 +68,12 @@ body {
     height: auto;
     padding: 8px;
     font: 12px sans-serif;
-    background: lightsteelblue;
+    background: black;
+    color: white;
     border: 0px;
     border-radius: 8px;
     pointer-events: none;
+}
+.legend {
+    font-size: 10px;
 }
