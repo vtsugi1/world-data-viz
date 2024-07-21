@@ -214,6 +214,21 @@ document.getElementById('playButton').addEventListener('click', async () => {
     const bubbleColor = document.getElementById('bubbleColor').value;
     const data = await fetchData('/data');
     playAnimation(data, selectedCountries, startYear, endYear, showLabels, bubbleColor);
+
+    // Generate text
+    const response = await fetch('/generate_text', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            countries: selectedCountries,
+            start_year: startYear,
+            end_year: endYear,
+        }),
+    });
+    const result = await response.json();
+    document.getElementById('generatedText').innerText = result.text;
 });
 
 document.getElementById('stopButton').addEventListener('click', () => {

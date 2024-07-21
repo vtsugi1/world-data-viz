@@ -1,5 +1,7 @@
-from flask import jsonify, render_template
+from flask import Flask, jsonify, render_template, request
 import pandas as pd
+from transformers import GPTNeoForCausalLM, GPT2Tokenizer
+import torch
 from app import app
 
 def get_data():
@@ -26,3 +28,43 @@ def years():
 @app.route('/')
 def index():
     return render_template('index.html')
+
+# Load the model and tokenizer
+model_name = "EleutherAI/gpt-neo-1.3B"
+tokenizer = GPT2Tokenizer.from_pretrained(model_name)
+model = GPTNeoForCausalLM.from_pretrained(model_name)
+
+@app.route('/generate_text', methods=['POST'])
+def generate_text():
+    data = request.json
+    countries = data.get('countries', [])
+    start_year = data.get('start_year')
+    end_year = data.get('end_year')
+    
+    # Enhanced prompt
+    prompt = f"Provide an overview of the historical events, economic changes, and major developments in {', '.join(countries)} from {start_year} to {end_year}."
+    
+    # Set the pad token
+    tokenizer.pad_token = tokenizer.eos_token
+    
+    inputs = tokenizer(prompt, return_tensors="pt", padding=True)
+    inputs['attention_mask'] = torch.ones(inputs['input_ids'].shape, dtype=torch.long)
+    
+    outputs = model.generate(
+        inputs['input_ids'], 
+        attention_mask=inputs['attention_mask'], 
+        max_length=500, 
+        num_return_sequences=1,
+        no_repeat_ngram_size=2,
+        temperature=0.7,
+        top_k=50,
+        top_p=0.95,
+        pad_token_id=tokenizer.eos_token_id
+    )
+    generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
+    
+    return jsonify({'text': generated_text})
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
