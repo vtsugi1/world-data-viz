@@ -1,0 +1,173 @@
+year,host_city,country,population,number_of_athletes
+2024,Paris,Australia,25678000,480
+2024,Paris,Greece,10432000,200
+2024,Paris,China,1402112000,431
+2024,Paris,UK,68207000,375
+2024,Paris,Brazil,213993000,305
+2024,Paris,Japan,126050000,552
+2024,Paris,USA,331893745,613
+2024,Paris,France,67413000,397
+2024,Paris,Germany,83191000,425
+2024,Paris,Russia,145912025,335
+2024,Paris,Canada,38005000,375
+2024,Paris,Italy,60317000,345
+2024,Paris,South Korea,51709098,220
+2024,Paris,India,1366417754,120
+2024,Paris,South Africa,59308690,175
+2024,Paris,Kenya,54985698,85
+2024,Paris,New Zealand,5084300,210
+2024,Paris,Argentina,45376763,215
+2024,Paris,Spain,46754778,320
+2024,Paris,Mexico,128649565,200
+2024,Paris,Netherlands,17475415,290
+2024,Paris,Sweden,10099265,150
+2024,Paris,Norway,5391369,120
+2024,Paris,Denmark,5831191,110
+2024,Paris,Finland,5531144,100
+2024,Paris,Poland,37846611,220
+2024,Paris,Switzerland,8637451,115
+2024,Paris,Belgium,11492641,160
+2024,Paris,Austria,8917205,85
+2024,Paris,Hungary,9660351,165
+2024,Paris,Romania,19257491,105
+2024,Paris,Czech Republic,10702942,145
+2024,Paris,Slovakia,5459642,65
+2024,Paris,Bulgaria,6927738,75
+2024,Paris,Ireland,4994724,65
+2024,Paris,Portugal,10196709,80
+2024,Paris,Turkey,84339067,115
+2024,Paris,Egypt,102334404,125
+2024,Paris,Nigeria,206139589,80
+2024,Paris,Ethiopia,114963588,70
+2024,Paris,Israel,9216900,90
+2024,Paris,Saudi Arabia,34813871,50
+2024,Paris,UAE,9890402,40
+2024,Paris,Algeria,44700000,50
+2024,Paris,Angola,32866272,30
+2024,Paris,Armenia,2968000,25
+2024,Paris,Azerbaijan,10200000,44
+2024,Paris,Bahamas,393248,28
+2024,Paris,Bahrain,1701583,35
+2024,Paris,Bangladesh,166303498,30
+2024,Paris,Belarus,9449323,70
+2024,Paris,Belize,419199,11
+2024,Paris,Benin,12123198,10
+2024,Paris,Bhutan,771608,5
+2024,Paris,Bolivia,11993011,15
+2024,Paris,Bosnia and Herzegovina,3280819,40
+2024,Paris,Botswana,2351627,10
+2024,Paris,Brunei,442400,10
+2024,Paris,Burkina Faso,21510181,10
+2024,Paris,Burundi,11890784,8
+2024,Paris,Cambodia,16718971,10
+2024,Paris,Cameroon,26545863,35
+2024,Paris,Cape Verde,555988,10
+2024,Paris,Central African Republic,4829767,5
+2024,Paris,Chad,16244513,5
+2024,Paris,Chile,19212362,60
+2024,Paris,Colombia,50882891,75
+2024,Paris,Congo,5518087,10
+2024,Paris,Costa Rica,5094118,10
+2024,Paris,Cote d'Ivoire,26378274,25
+2024,Paris,Croatia,4105267,85
+2024,Paris,Cuba,11326616,80
+2024,Paris,Cyprus,1207359,15
+2024,Paris,Djibouti,988000,5
+2024,Paris,Dominican Republic,10847910,50
+2024,Paris,Ecuador,17643054,45
+2024,Paris,El Salvador,6486201,10
+2024,Paris,Equatorial Guinea,1402985,5
+2024,Paris,Eswatini,1160164,10
+2024,Paris,Estonia,1326535,35
+2024,Paris,Fiji,896444,50
+2024,Paris,Gabon,2225734,5
+2024,Paris,Gambia,2416668,10
+2024,Paris,Georgia,3989167,35
+2024,Paris,Ghana,31072940,15
+2024,Paris,Grenada,112523,10
+2024,Paris,Guatemala,17915568,30
+2024,Paris,Guinea,13132792,5
+2024,Paris,Guinea-Bissau,1968001,5
+2024,Paris,Guyana,786559,10
+2024,Paris,Haiti,11577779,10
+2024,Paris,Honduras,9904608,10
+2024,Paris,Iceland,366425,30
+2024,Paris,Indonesia,273523615,35
+2024,Paris,Iran,83992949,80
+2024,Paris,Iraq,40222503,10
+2024,Paris,Jamaica,2961161,50
+2024,Paris,Jordan,10203134,20
+2024,Paris,Kazakhstan,18776707,85
+2024,Paris,Kosovo,1831000,11
+2024,Paris,Kuwait,4270563,20
+2024,Paris,Kyrgyzstan,6524195,15
+2024,Paris,Laos,7275560,10
+2024,Paris,Latvia,1886198,35
+2024,Paris,Lebanon,6825442,10
+2024,Paris,Lesotho,2142249,10
+2024,Paris,Liberia,5057681,5
+2024,Paris,Libya,6871292,5
+2024,Paris,Liechtenstein,38128,10
+2024,Paris,Lithuania,2722289,45
+2024,Paris,Luxembourg,634814,10
+2024,Paris,Madagascar,27691018,5
+2024,Paris,Malawi,19129952,5
+2024,Paris,Malaysia,32365999,30
+2024,Paris,Maldives,540544,5
+2024,Paris,Mali,20250833,5
+2024,Paris,Malta,514564,5
+2024,Paris,Mauritania,4649658,5
+2024,Paris,Mauritius,1271768,10
+2024,Paris,Moldova,2657637,20
+2024,Paris,Mongolia,3278292,40
+2024,Paris,Montenegro,622359,35
+2024,Paris,Morocco,36910560,50
+2024,Paris,Mozambique,31255435,5
+2024,Paris,Myanmar,54409800,30
+2024,Paris,Namibia,2540905,10
+2024,Paris,Nauru,10834,5
+2024,Paris,Nepal,29136808,5
+2024,Paris,Nicaragua,6624554,10
+2024,Paris,Niger,24206644,5
+2024,Paris,North Macedonia,2083459,30
+2024,Paris,Palau,18094,5
+2024,Paris,Panama,4314768,10
+2024,Paris,Papua New Guinea,8947024,10
+2024,Paris,Paraguay,7132530,10
+2024,Paris,Peru,32971846,45
+2024,Paris,Philippines,109581085,30
+2024,Paris,Qatar,2881053,20
+2024,Paris,Rwanda,12952218,5
+2024,Paris,San Marino,33931,5
+2024,Paris,Sao Tome and Principe,219159,5
+2024,Paris,Senegal,16743927,20
+2024,Paris,Serbia,8772235,85
+2024,Paris,Seychelles,98347,10
+2024,Paris,Sierra Leone,7976983,5
+2024,Paris,Singapore,5850342,25
+2024,Paris,Solomon Islands,686884,5
+2024,Paris,Somalia,15893222,5
+2024,Paris,South Sudan,11193725,5
+2024,Paris,Sri Lanka,21803000,10
+2024,Paris,Sudan,43849260,5
+2024,Paris,Suriname,586632,10
+2024,Paris,Syria,17500657,10
+2024,Paris,Tajikistan,9537645,15
+2024,Paris,Tanzania,59734218,10
+2024,Paris,Thailand,69799978,45
+2024,Paris,Timor-Leste,1318445,5
+2024,Paris,Togo,8278724,5
+2024,Paris,Tonga,105695,10
+2024,Paris,Trinidad and Tobago,1399491,50
+2024,Paris,Tunisia,11818618,45
+2024,Paris,Turkmenistan,6031200,5
+2024,Paris,Tuvalu,11646,5
+2024,Paris,Uganda,45741000,10
+2024,Paris,Uruguay,3473727,35
+2024,Paris,Uzbekistan,33469203,80
+2024,Paris,Vanuatu,307150,5
+2024,Paris,Venezuela,28435943,45
+2024,Paris,Vietnam,97338583,30
+2024,Paris,Yemen,29825964,5
+2024,Paris,Zambia,18383955,10
+2024,Paris,Zimbabwe,14862924,5

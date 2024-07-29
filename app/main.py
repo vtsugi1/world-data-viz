@@ -4,6 +4,9 @@ from transformers import GPTNeoForCausalLM, GPT2Tokenizer
 import torch
 from app import app
 
+# Check if CUDA is available and set the device accordingly
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 def get_data():
     df = pd.read_csv('app/data/cleaned_data.csv')
     return df.to_dict(orient='records')
@@ -29,10 +32,18 @@ def years():
 def index():
     return render_template('index.html')
 
+@app.route('/bubble_chart')
+def bubble_chart():
+    return render_template('bubble_chart.html')
+
+@app.route('/map_visualization')
+def map_visualization():
+    return render_template('map_visualization.html')
+
 # Load the model and tokenizer
 model_name = "EleutherAI/gpt-neo-1.3B"
 tokenizer = GPT2Tokenizer.from_pretrained(model_name)
-model = GPTNeoForCausalLM.from_pretrained(model_name)
+model = GPTNeoForCausalLM.from_pretrained(model_name).to(device)
 
 @app.route('/generate_text', methods=['POST'])
 def generate_text():
@@ -41,14 +52,13 @@ def generate_text():
     start_year = data.get('start_year')
     end_year = data.get('end_year')
     
-    # Enhanced prompt
     prompt = f"Provide an overview of the historical events, economic changes, and major developments in {', '.join(countries)} from {start_year} to {end_year}."
     
     # Set the pad token
     tokenizer.pad_token = tokenizer.eos_token
     
-    inputs = tokenizer(prompt, return_tensors="pt", padding=True)
-    inputs['attention_mask'] = torch.ones(inputs['input_ids'].shape, dtype=torch.long)
+    inputs = tokenizer(prompt, return_tensors="pt", padding=True).to(device)
+    inputs['attention_mask'] = torch.ones(inputs['input_ids'].shape, dtype=torch.long).to(device)
     
     outputs = model.generate(
         inputs['input_ids'], 
@@ -64,7 +74,6 @@ def generate_text():
     generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
     
     return jsonify({'text': generated_text})
-
 
 if __name__ == '__main__':
     app.run(debug=True)

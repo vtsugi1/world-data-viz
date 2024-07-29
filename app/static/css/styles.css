@@ -61,17 +61,29 @@ body {
 }
 .tooltip {
     position: absolute;
-    text-align: center;
+    text-align: left;
     width: auto;
-    height: auto;
     padding: 8px;
     font: 12px sans-serif;
-    background: black;
-    color: white;
-    border: 0px;
-    border-radius: 8px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
     pointer-events: none;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    color: black;
 }
 .legend {
     font-size: 10px;
+}
+#map {
+    margin-top: 20px;
+    text-align: center;
+}
+svg {
+    border: 1px solid #ccc;
+    background-color: #f9f9f9; /* Added background color for geopolitical atlas style */
+}
+.legend rect {
+    stroke: #ccc;
+    stroke-width: 1px;
 }

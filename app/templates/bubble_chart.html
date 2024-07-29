@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dynamic Bubble Chart with D3.js</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <script defer src="/static/js/scripts.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header center-align">
+            <h1>World Data Viz - Bubble Chart</h1>
+            <p>Welcome to the World Data Viz! Use the controls below to generate a dynamic bubble chart. Select the countries and years to visualize the data. Click "Play" to animate the data over time or "Stop" to halt the animation.</p>
+        </div>
+        <div class="row center-align">
+            <div class="col s12">
+                <img src="/static/images/world_data_viz_banner.png" alt="World Data Viz Banner" class="responsive-img banner-img">
+            </div>
+        </div>
+        <div class="row controls">
+            <div class="input-field col s12">
+                <label for="countries" class="active">Select Countries</label>
+                <select id="countries" multiple class="select2-browser-default"></select>
+            </div>
+            <div class="input-field col s12 m4 l2">
+                <label for="startYear" class="active">Start Year</label>
+                <select id="startYear" class="browser-default"></select>
+            </div>
+            <div class="input-field col s12 m4 l2">
+                <label for="endYear" class="active">End Year</label>
+                <select id="endYear" class="browser-default"></select>
+            </div>
+            <div class="input-field col s12 m4 l2">
+                <label for="bubbleColor" class="active">Bubble Color</label>
+                <input type="color" id="bubbleColor" value="#4bc0c0" class="browser-default">
+            </div>
+            <div class="input-field col s12 m4 l2">
+                <label>
+                    <input type="checkbox" id="showLabels" checked />
+                    <span>Show Labels</span>
+                </label>
+            </div>
+            <div class="input-field col s12 m4 l2">
+                <button id="playButton" class="btn waves-effect waves-light">
+                    <i class="material-icons left">play_arrow</i>Play
+                </button>
+            </div>
+            <div class="input-field col s12 m4 l2">
+                <button id="stopButton" class="btn red waves-effect waves-light">
+                    <i class="material-icons left">stop</i>Stop
+                </button>
+            </div>
+        </div>
+        <div class="chart center-align">
+            <svg id="bubbleChart" width="1000" height="600"></svg>
+        </div>
+        <div class="generated-text center-align">
+            <p id="generatedText"></p>
+        </div>
+    </div>
+</body>
+</html>
