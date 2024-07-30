@@ -6,7 +6,7 @@ This project visualizes world data using a dynamic bubble chart. The data includ
 
 Ensure you have the following software installed:
 - Python 3.10 or later (64-bit)
-- Git
+- Git or GitHub Desktop
 
 ## Fresh Installation of Python 3.10 (64-bit)
 
@@ -75,13 +75,14 @@ Ensure you have the following software installed:
 
 ## Setup
 
-### 1. Clone the repository
+### 1. Clone the repository using GitHub Desktop
 
-Open a terminal or PowerShell and run:
-```bash
-git clone https://github.com/yourusername/world-data-viz.git
-cd world-data-viz
-```
+1. Download and install GitHub Desktop from the [official website](https://desktop.github.com/).
+2. Open GitHub Desktop and sign in to your GitHub account.
+3. Click on `File` > `Clone Repository`.
+4. In the `URL` tab, paste the repository URL: `https://github.com/yourusername/world-data-viz.git`.
+5. Choose the local path where you want to clone the repository.
+6. Click `Clone`.
 
 ### 2. Create a virtual environment
 
@@ -122,3 +123,5 @@ Start the Flask development server:
 ```bash
 flask run
 ```
+
+By following these steps, you ensure a clean installation of Python 3.10 and set up the project without conflicts from previous Python versions.
