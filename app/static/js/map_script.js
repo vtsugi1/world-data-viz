@@ -40,9 +40,15 @@ Promise.all([
 
     // Function to update the map based on the selected metric
     function updateMap(metric) {
+        // Calculate the actual maximum value for the metric, with clamping if needed
+        const maxValue = d3.max(data, d => d[metric]);
+
+        // Optional: Clamp the max value to avoid outliers dominating the scale
+        const clampedMaxValue = Math.min(maxValue, 50);  // Example: cap at 50
+
         // Create a color scale with a broader range
         colorScale = d3.scaleSequential(d3.interpolateYlOrRd)
-            .domain([0, d3.max(data, d => d[metric])]);
+            .domain([0, clampedMaxValue]);
 
         // Update the map
         svg.selectAll("path")
