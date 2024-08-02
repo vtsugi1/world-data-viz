@@ -36,10 +36,12 @@ Promise.all([
     })
 ]).then(function([world, data]) {
 
+    let colorScale; // Declare colorScale globally to update it later
+
     // Function to update the map based on the selected metric
     function updateMap(metric) {
         // Create a color scale with a broader range
-        const colorScale = d3.scaleSequential(d3.interpolateYlOrRd)
+        colorScale = d3.scaleSequential(d3.interpolateYlOrRd)
             .domain([0, d3.max(data, d => d[metric])]);
 
         // Update the map
