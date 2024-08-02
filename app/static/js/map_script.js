@@ -31,7 +31,7 @@ Promise.all([
             country: d.country,
             population: +d.population,
             number_of_athletes: +d.number_of_athletes,
-            athletes_per_thousand: (+d.number_of_athletes / +d.population) * 1000
+            athletes_per_thousand: (+d.number_of_athletes / +d.population) * 1000000
         };
     })
 ]).then(function([world, data]) {
@@ -63,7 +63,7 @@ Promise.all([
                     tooltip.html(`<strong>Country:</strong> ${country.country}<br>
                                   <strong>Population:</strong> ${country.population.toLocaleString()}<br>
                                   <strong>Number of Athletes:</strong> ${country.number_of_athletes}<br>
-                                  <strong>Athletes per 1000:</strong> ${country.athletes_per_thousand.toFixed(2)}`)
+                                  <strong>Athletes per 1,000,000:</strong> ${country.athletes_per_thousand.toFixed(2)}`)
                         .style("left", (event.pageX + 5) + "px")
                         .style("top", (event.pageY - 28) + "px");
                 }
