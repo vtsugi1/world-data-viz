@@ -31,16 +31,24 @@ Promise.all([
             country: d.country,
             population: +d.population,
             number_of_athletes: +d.number_of_athletes,
-            athletes_per_thousand: (+d.number_of_athletes / +d.population) * 1000
+            athletes_per_thousand: (+d.number_of_athletes / +d.population) * 1000000
         };
     })
 ]).then(function([world, data]) {
 
+    let colorScale; // Declare colorScale globally to update it later
+
     // Function to update the map based on the selected metric
     function updateMap(metric) {
+        // Calculate the actual maximum value for the metric, with clamping if needed
+        const maxValue = d3.max(data, d => d[metric]);
+
+        // Optional: Clamp the max value to avoid outliers dominating the scale
+        const clampedMaxValue = Math.min(maxValue, 50);  // Example: cap at 50
+
         // Create a color scale with a broader range
-        const colorScale = d3.scaleSequential(d3.interpolateYlOrRd)
-            .domain([0, d3.max(data, d => d[metric])]);
+        colorScale = d3.scaleSequential(d3.interpolateYlOrRd)
+            .domain([0, clampedMaxValue]);
 
         // Update the map
         svg.selectAll("path")
@@ -63,7 +71,7 @@ Promise.all([
                     tooltip.html(`<strong>Country:</strong> ${country.country}<br>
                                   <strong>Population:</strong> ${country.population.toLocaleString()}<br>
                                   <strong>Number of Athletes:</strong> ${country.number_of_athletes}<br>
-                                  <strong>Athletes per 1000:</strong> ${country.athletes_per_thousand.toFixed(2)}`)
+                                  <strong>Athletes per 1,000,000:</strong> ${country.athletes_per_thousand.toFixed(2)}`)
                         .style("left", (event.pageX + 5) + "px")
                         .style("top", (event.pageY - 28) + "px");
                 }
