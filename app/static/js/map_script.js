@@ -1,6 +1,6 @@
 // Width and height of the map
 const width = 1200;
-const height = 600;
+const height = 800;
 
 // Create SVG element for the map
 const svg = d3.select("#map")
@@ -76,7 +76,7 @@ Promise.all([
                     tooltip.html(`<strong>Country:</strong> ${country.country}<br>
                                   <strong>Population:</strong> ${country.population.toLocaleString()}<br>
                                   <strong>Number of Athletes:</strong> ${country.number_of_athletes}<br>
-                                  <strong>Athletes per 1,000,000:</strong> ${country.athletes_per_thousand.toFixed(2)}`)
+                                  <strong>Athletes per 1,000,000 People:</strong> ${country.athletes_per_thousand.toFixed(2)}`)
                         .style("left", (event.pageX + 5) + "px")
                         .style("top", (event.pageY - 28) + "px");
                 }
@@ -92,49 +92,27 @@ Promise.all([
         // Remove any existing legend
         d3.select("#legend").remove();
 
-        // Add a new legend
-        createLegend(colorScale, minValue, maxValue);
-    }
+        // Add a new legend with dynamic title and formatted ticks
+        const legendTitle = {
+            "number_of_athletes": "Number of Athletes",
+            "athletes_per_thousand": "Athletes per 1,000 People",
+            "population": "Population"
+        };
 
-    // Function to create a legend for the color scale
-    function createLegend(colorScale, minValue, maxValue) {
-        const legendHeight = 300;
-        const legendWidth = 20;
+        const tickFormat = d3.format(".0f");
 
-        const legendSvg = svg.append("g")
-            .attr("id", "legend")
-            .attr("transform", `translate(${width - legendWidth - 100}, ${height / 2 - legendHeight / 2})`);
+        const legendSvg = d3.select("#map").append(() => Legend(colorScale, {
+            title: legendTitle[metric] || "Metric",
+            tickFormat: d => {
+                if (d >= 1000000) return `${(d / 1000000).toFixed(0)}MM`;
+                if (d >= 1000) return `${(d / 1000).toFixed(0)}K`;
+                return tickFormat(d);
+            },
+            width: 300 // Adjust the width as needed
+        }));
 
-        const gradient = legendSvg.append("defs")
-            .append("linearGradient")
-            .attr("id", "gradient")
-            .attr("x1", "0%")
-            .attr("y1", "100%")
-            .attr("x2", "0%")
-            .attr("y2", "0%");
-
-        gradient.selectAll("stop")
-            .data(d3.ticks(minValue, maxValue, 10))
-            .enter()
-            .append("stop")
-            .attr("offset", d => `${(d - minValue) / (maxValue - minValue) * 100}%`)
-            .attr("stop-color", d => colorScale(d));
-
-        legendSvg.append("rect")
-            .attr("width", legendWidth)
-            .attr("height", legendHeight)
-            .style("fill", "url(#gradient)");
-
-        const legendScale = d3.scaleLinear()
-            .domain([minValue, maxValue])
-            .range([legendHeight, 0]);
-
-        const legendAxis = d3.axisRight(legendScale)
-            .ticks(6);
-
-        legendSvg.append("g")
-            .attr("transform", `translate(${legendWidth}, 0)`)
-            .call(legendAxis);
+        legendSvg.attr("id", "legend")
+                 .attr("transform", `translate(${width - 350}, ${height - 900})`); // Adjust positioning as needed
     }
 
     // Initialize the map with the default metric
