@@ -1,8 +1,8 @@
 // Width and height of the map
-const width = 960;
+const width = 1200;
 const height = 600;
 
-// Create SVG element
+// Create SVG element for the map
 const svg = d3.select("#map")
     .append("svg")
     .attr("width", width)
@@ -36,19 +36,24 @@ Promise.all([
     })
 ]).then(function([world, data]) {
 
-    let colorScale; // Declare colorScale globally to update it later
+    let colorScale;
 
     // Function to update the map based on the selected metric
     function updateMap(metric) {
-        // Calculate the actual maximum value for the metric, with clamping if needed
-        const maxValue = d3.max(data, d => d[metric]);
+        // Calculate metric values for the selected countries
+        const metricValues = data.map(d => d[metric]).filter(value => !isNaN(value));
 
-        // Optional: Clamp the max value to avoid outliers dominating the scale
-        const clampedMaxValue = Math.min(maxValue, 50);  // Example: cap at 50
+        // Calculate the median and standard deviation
+        const median = d3.median(metricValues);
+        const stdDev = d3.deviation(metricValues);
 
-        // Create a color scale with a broader range
-        colorScale = d3.scaleSequential(d3.interpolateYlOrRd)
-            .domain([0, clampedMaxValue]);
+        // Define the scale domain based on the median and one standard deviation
+        const minValue = Math.max(0, median - stdDev); // Ensure minValue is not negative
+        const maxValue = median + stdDev;
+
+        // Create the color scale
+        colorScale = d3.scaleSequential(d3.interpolateViridis)
+            .domain([minValue, maxValue]);
 
         // Update the map
         svg.selectAll("path")
@@ -57,7 +62,7 @@ Promise.all([
             .attr("d", path)
             .attr("fill", function(d) {
                 const country = data.find(c => c.country === d.properties.name);
-                if (country) {
+                if (country && !isNaN(country[metric])) {
                     return colorScale(country[metric]);
                 } else {
                     return "#ccc";
@@ -84,32 +89,51 @@ Promise.all([
                 tooltip.transition().duration(500).style("opacity", 0);
             });
 
-        // Update legend
-        svg.selectAll(".legend").remove();
-        const legend = svg.append("g")
-            .attr("class", "legend")
-            .attr("transform", "translate(20, 20)");
+        // Remove any existing legend
+        d3.select("#legend").remove();
+
+        // Add a new legend
+        createLegend(colorScale, minValue, maxValue);
+    }
+
+    // Function to create a legend for the color scale
+    function createLegend(colorScale, minValue, maxValue) {
+        const legendHeight = 300;
+        const legendWidth = 20;
+
+        const legendSvg = svg.append("g")
+            .attr("id", "legend")
+            .attr("transform", `translate(${width - legendWidth - 100}, ${height / 2 - legendHeight / 2})`);
+
+        const gradient = legendSvg.append("defs")
+            .append("linearGradient")
+            .attr("id", "gradient")
+            .attr("x1", "0%")
+            .attr("y1", "100%")
+            .attr("x2", "0%")
+            .attr("y2", "0%");
+
+        gradient.selectAll("stop")
+            .data(d3.ticks(minValue, maxValue, 10))
+            .enter()
+            .append("stop")
+            .attr("offset", d => `${(d - minValue) / (maxValue - minValue) * 100}%`)
+            .attr("stop-color", d => colorScale(d));
+
+        legendSvg.append("rect")
+            .attr("width", legendWidth)
+            .attr("height", legendHeight)
+            .style("fill", "url(#gradient)");
 
         const legendScale = d3.scaleLinear()
-            .domain(colorScale.domain())
-            .range([0, 300]);
+            .domain([minValue, maxValue])
+            .range([legendHeight, 0]);
 
-        const legendAxis = d3.axisBottom(legendScale)
-            .ticks(5)
-            .tickFormat(d3.format(".1f"));
+        const legendAxis = d3.axisRight(legendScale)
+            .ticks(6);
 
-        legend.selectAll("rect")
-            .data(d3.range(colorScale.domain()[0], colorScale.domain()[1], (colorScale.domain()[1] - colorScale.domain()[0]) / 10))
-            .enter()
-            .append("rect")
-            .attr("x", d => legendScale(d))
-            .attr("y", 0)
-            .attr("width", 30)
-            .attr("height", 10)
-            .attr("fill", d => colorScale(d));
-
-        legend.append("g")
-            .attr("transform", "translate(0, 10)")
+        legendSvg.append("g")
+            .attr("transform", `translate(${legendWidth}, 0)`)
             .call(legendAxis);
     }
 
