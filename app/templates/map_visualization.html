@@ -8,17 +8,19 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://d3js.org/topojson.v3.min.js"></script>
     <link rel="stylesheet" href="/static/css/styles.css">
-    <script defer src="/static/js/map_script.js"></script>
+    <!-- Corrected the script tags -->
+    <script src="/static/js/legend.js" defer></script>
+    <script src="/static/js/map_script.js" defer></script>
 </head>
 <body>
     <div class="container">
         <h1>World Data Viz - Map Visualization</h1>
-        <p>This map shows the number of athletes per thousand population in each Olympic host country. Use the dropdown menu to select the metric for the color scale.</p>
+        <p>This map shows the number of athletes per thousand people in each Olympic host country. Use the dropdown menu to select the metric for the color scale.</p>
         <div class="row">
             <div class="input-field col s12">
                 <select id="metric-selector">
                     <option value="number_of_athletes" selected>Number of Athletes</option>
-                    <option value="athletes_per_thousand">Athletes per 1000 Population</option>
+                    <option value="athletes_per_thousand">Athletes per 1000 People</option>
                     <option value="population">Population</option>
                 </select>
                 <label for="metric-selector">Select Metric for Color Scale</label>

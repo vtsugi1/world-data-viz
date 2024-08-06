@@ -1,8 +1,8 @@
 // Width and height of the map
-const width = 960;
-const height = 600;
+const width = 1200;
+const height = 800;
 
-// Create SVG element
+// Create SVG element for the map
 const svg = d3.select("#map")
     .append("svg")
     .attr("width", width)
@@ -36,19 +36,24 @@ Promise.all([
     })
 ]).then(function([world, data]) {
 
-    let colorScale; // Declare colorScale globally to update it later
+    let colorScale;
 
     // Function to update the map based on the selected metric
     function updateMap(metric) {
-        // Calculate the actual maximum value for the metric, with clamping if needed
-        const maxValue = d3.max(data, d => d[metric]);
+        // Calculate metric values for the selected countries
+        const metricValues = data.map(d => d[metric]).filter(value => !isNaN(value));
 
-        // Optional: Clamp the max value to avoid outliers dominating the scale
-        const clampedMaxValue = Math.min(maxValue, 50);  // Example: cap at 50
+        // Calculate the median and standard deviation
+        const median = d3.median(metricValues);
+        const stdDev = d3.deviation(metricValues);
 
-        // Create a color scale with a broader range
-        colorScale = d3.scaleSequential(d3.interpolateYlOrRd)
-            .domain([0, clampedMaxValue]);
+        // Define the scale domain based on the median and one standard deviation
+        const minValue = Math.max(0, median - stdDev); // Ensure minValue is not negative
+        const maxValue = median + stdDev;
+
+        // Create the color scale
+        colorScale = d3.scaleSequential(d3.interpolateViridis)
+            .domain([minValue, maxValue]);
 
         // Update the map
         svg.selectAll("path")
@@ -57,7 +62,7 @@ Promise.all([
             .attr("d", path)
             .attr("fill", function(d) {
                 const country = data.find(c => c.country === d.properties.name);
-                if (country) {
+                if (country && !isNaN(country[metric])) {
                     return colorScale(country[metric]);
                 } else {
                     return "#ccc";
@@ -71,7 +76,7 @@ Promise.all([
                     tooltip.html(`<strong>Country:</strong> ${country.country}<br>
                                   <strong>Population:</strong> ${country.population.toLocaleString()}<br>
                                   <strong>Number of Athletes:</strong> ${country.number_of_athletes}<br>
-                                  <strong>Athletes per 1,000,000:</strong> ${country.athletes_per_thousand.toFixed(2)}`)
+                                  <strong>Athletes per 1,000,000 People:</strong> ${country.athletes_per_thousand.toFixed(2)}`)
                         .style("left", (event.pageX + 5) + "px")
                         .style("top", (event.pageY - 28) + "px");
                 }
@@ -84,33 +89,30 @@ Promise.all([
                 tooltip.transition().duration(500).style("opacity", 0);
             });
 
-        // Update legend
-        svg.selectAll(".legend").remove();
-        const legend = svg.append("g")
-            .attr("class", "legend")
-            .attr("transform", "translate(20, 20)");
+        // Remove any existing legend
+        d3.select("#legend").remove();
 
-        const legendScale = d3.scaleLinear()
-            .domain(colorScale.domain())
-            .range([0, 300]);
+        // Add a new legend with dynamic title and formatted ticks
+        const legendTitle = {
+            "number_of_athletes": "Number of Athletes",
+            "athletes_per_thousand": "Athletes per 1,000 People",
+            "population": "Population"
+        };
 
-        const legendAxis = d3.axisBottom(legendScale)
-            .ticks(5)
-            .tickFormat(d3.format(".1f"));
+        const tickFormat = d3.format(".0f");
 
-        legend.selectAll("rect")
-            .data(d3.range(colorScale.domain()[0], colorScale.domain()[1], (colorScale.domain()[1] - colorScale.domain()[0]) / 10))
-            .enter()
-            .append("rect")
-            .attr("x", d => legendScale(d))
-            .attr("y", 0)
-            .attr("width", 30)
-            .attr("height", 10)
-            .attr("fill", d => colorScale(d));
+        const legendSvg = d3.select("#map").append(() => Legend(colorScale, {
+            title: legendTitle[metric] || "Metric",
+            tickFormat: d => {
+                if (d >= 1000000) return `${(d / 1000000).toFixed(0)}MM`;
+                if (d >= 1000) return `${(d / 1000).toFixed(0)}K`;
+                return tickFormat(d);
+            },
+            width: 300 // Adjust the width as needed
+        }));
 
-        legend.append("g")
-            .attr("transform", "translate(0, 10)")
-            .call(legendAxis);
+        legendSvg.attr("id", "legend")
+                 .attr("transform", `translate(${width - 350}, ${height - 900})`); // Adjust positioning as needed
     }
 
     // Initialize the map with the default metric
