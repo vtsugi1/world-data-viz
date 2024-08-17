@@ -45,7 +45,7 @@ def steam_games():
     conn = sqlite3.connect('app/static/data/games.db')
     cursor = conn.cursor()
 
-    cursor.execute("SELECT * FROM steam_games")
+    cursor.execute("SELECT * FROM steam_games limit 100")
     rows = cursor.fetchall()
 
     # Get column names from the cursor description
@@ -56,6 +56,33 @@ def steam_games():
 
     conn.close()
     return jsonify(steam_games_data)
+
+
+
+# Function to get the top 50 games by score
+def get_top_50_games():
+    conn = sqlite3.connect('app/static/data/games.db')
+    cursor = conn.cursor()
+    cursor.execute('''
+        SELECT Name, Metacritic_score 
+        FROM steam_games 
+        WHERE Metacritic_score IS NOT NULL 
+        ORDER BY Metacritic_score DESC 
+        LIMIT 50
+    ''')
+    data = cursor.fetchall()
+    conn.close()
+
+    return [{"Name": row[0], "Metacritic_score": row[1]} for row in data]
+
+@app.route('/top_50_games')
+def top_50_games():
+    data = get_top_50_games()
+    return jsonify(data)
+
+@app.route('/video_game_sequels')
+def video_game_sequels():
+    return render_template('video_game_sequels.html')
 
 
 # # Load the model and tokenizer
