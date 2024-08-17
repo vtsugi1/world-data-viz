@@ -4,19 +4,102 @@
 <head>
     <meta charset="UTF-8">
     <title>Video Game Sequels Analysis</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js" defer></script>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <link rel="stylesheet" href="/static/css/styles.css">
+    <style>
+        body {
+            background-color: #1b1b1b;
+            color: #f5f5f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #ffcc00;
+            font-size: 3em;
+            padding-top: 20px;
+        }
+
+        p {
+            text-align: center;
+            font-size: 1.2em;
+            color: #cccccc;
+        }
+
+        .container {
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        .row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .input-field {
+            width: 300px;
+            margin: 10px;
+            color: #333;
+        }
+
+        select {
+            background-color: #333;
+            color: #ffcc00;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            font-size: 1em;
+            outline: none;
+        }
+
+        label {
+            color: #ffcc00;
+        }
+
+        #visualization {
+            background-color: #262626;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0015px
+            rgba(0, 0, 0, 0.5);
+        }
+
+        svg {
+            background-color: #333;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0015px
+            rgba(0, 0, 0, 0.5);
+        }
+    </style>
 </head>
 
 <body>
     <div class="container">
-        <h1>Top 50 Video Game Scores</h1>
-        <p>This bar chart shows the top 50 video games with the highest scores.</p>
+        <h1>Video Game Sequels Analysis</h1>
+        <p>Explore the trends and correlations to see if video game sequels generally perform better or worse than their
+            originals.</p>
+        <!-- Filters Section -->
+        <div class="row">
+            <div class="input-field col s12 m6"><label for="game-selector">Select Game Franchise</label>
+                <select id="game-selector">
+                    <option value="" disabled selected>Choose a game franchise</option>
+                    <!-- Options will be populated dynamically -->
+                </select></div>
+            <div class="input-field col s12 m6"><label for="metric-selector">Select Metric</label>
+                <select id="metric-selector">
+                    <option value="score" selected>Metacritic Score</option>
+                    <option value="sales">Sales</option>
+                </select></div>
+        </div>
         <!-- Visualization Section -->
-        <div id="chart"></div>
+        <div id="visualization" class="row">
+            <div class="col s12"><svg id="chart" width="1000" height="700"></svg></div>
+        </div>
     </div>
+    <!-- Load D3.js -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="/static/js/video_game_sequels.js"></script>
 </body>
 
