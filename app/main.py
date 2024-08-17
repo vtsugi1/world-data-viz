@@ -1,12 +1,11 @@
 from flask import Flask, jsonify, render_template, request
 import pandas as pd
+import sqlite3
+from app import app
 # from transformers import GPTNeoForCausalLM, GPT2Tokenizer
 # import torch
-from app import app
 
-# Check if CUDA is available and set the device accordingly
-# device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
+# Load existing data
 def get_data():
     df = pd.read_csv('app/data/cleaned_data.csv')
     return df.to_dict(orient='records')
@@ -39,6 +38,25 @@ def bubble_chart():
 @app.route('/map_visualization')
 def map_visualization():
     return render_template('map_visualization.html')
+
+# New route to handle Steam games data
+@app.route('/steam_games')
+def steam_games():
+    conn = sqlite3.connect('app/static/data/games.db')
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM steam_games")
+    rows = cursor.fetchall()
+
+    # Get column names from the cursor description
+    columns = [description[0] for description in cursor.description]
+    
+    # Convert the rows to a list of dictionaries
+    steam_games_data = [dict(zip(columns, row)) for row in rows]
+
+    conn.close()
+    return jsonify(steam_games_data)
+
 
 # # Load the model and tokenizer
 # model_name = "EleutherAI/gpt-neo-1.3B"
@@ -74,6 +92,8 @@ def map_visualization():
 #     generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
     
 #     return jsonify({'text': generated_text})
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

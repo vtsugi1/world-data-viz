@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Video Game Sequels Analysis</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js" defer></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Video Game Sequels Analysis</h1>
+        <p>Explore the trends and correlations to see if video game sequels generally perform better or worse than their
+            originals.</p><!-- Filters Section -->
+        <div class="row">
+            <div class="input-field col s12 m6"><select id="game-selector">
+                    <option value="" disabled selected>Choose a game franchise</option>
+                    <!-- Options will be populated dynamically -->
+                </select><label for="game-selector">Select Game Franchise</label></div>
+            <div class="input-field col s12 m6"><select id="metric-selector">
+                    <option value="score" selected>Metacritic Score</option>
+                    <option value="sales">Sales</option>
+                </select><label for="metric-selector">Select Metric</label></div>
+        </div><!-- Visualization Section -->
+        <div id="visualization" class="row">
+            <div class="col s12"><svg id="chart" width="100%" height="500"></svg></div>
+        </div>
+    </div>
+    <script>document.addEventListener('DOMContentLoaded', function () {
+            var elems = document.querySelectorAll('select');
+            M.FormSelect.init(elems);
+        });
+    </script>
+    <script src="/static/js/video_game_sequels.js"></script>
+</body>
+
+</html>
