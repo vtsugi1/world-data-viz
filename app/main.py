@@ -39,6 +39,11 @@ def bubble_chart():
 def map_visualization():
     return render_template('map_visualization.html')
 
+#Houses Sold
+@app.route('/houses_sold')
+def houses_sold():
+    return render_template('houses_sold.html')
+
 # New route to handle Steam games data
 @app.route('/steam_games')
 def steam_games():

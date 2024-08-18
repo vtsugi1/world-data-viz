@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Map Visualization</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js" defer></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/topojson.v3.min.js"></script>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <!-- Corrected the script tags -->
+    <script src="/static/js/legend.js" defer></script>
+    <script src="/static/js/map_script.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Houses Sold in NZ</h1>
+        <p>Houses sold in NZ by dimensions etc...</p>
+        <div class="row">
+            <div class="input-field col s12">
+                <select id="metric-selector">
+                    <option value="number_of_athletes" selected>Number of Athletes</option>
+                    <option value="athletes_per_thousand">Athletes per 1000 People</option>
+                    <option value="population">Population</option>
+                </select>
+                <label for="metric-selector">Select Metric for Color Scale</label>
+            </div>
+        </div>
+        <div id="map"></div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('select');
+            M.FormSelect.init(elems);
+        });
+    </script>
+</body>
+</html>
