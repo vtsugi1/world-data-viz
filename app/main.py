@@ -41,7 +41,7 @@ def map_visualization():
 
 #Houses Sold
 @app.route('/houses_sold')
-def houses_purchased():
+def houses_sold():
     return render_template('houses_sold.html')
 
 # New route to handle Steam games data
