@@ -16,6 +16,16 @@ const projection = d3.geoNaturalEarth1()
 const path = d3.geoPath()
     .projection(projection);
 
+// Create a border around the globe
+const globe = {type: "Sphere"};
+
+svg.append("path")
+    .datum(globe)
+    .attr("d", path)
+    .attr("fill", "none")
+    .attr("stroke", "grey")  // Change this to your desired border color
+    .attr("stroke-width", 1);  // Adjust the border width as needed
+
 // Create a tooltip
 const tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
@@ -56,9 +66,10 @@ Promise.all([
             .domain([minValue, maxValue]);
 
         // Update the map
-        svg.selectAll("path")
+        svg.selectAll("path.country")
             .data(world.features)
             .join("path")
+            .attr("class", "country")
             .attr("d", path)
             .attr("fill", function(d) {
                 const country = data.find(c => c.country === d.properties.name);

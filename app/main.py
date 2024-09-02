@@ -44,6 +44,10 @@ def map_visualization():
 def houses_sold():
     return render_template('houses_sold.html')
 
+@app.route('/earthquakes')
+def earthquakes():
+    return render_template('earthquakes.html')
+
 # New route to handle Steam games data
 @app.route('/steam_games')
 def steam_games():
